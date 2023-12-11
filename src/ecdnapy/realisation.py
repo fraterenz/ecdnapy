@@ -121,10 +121,14 @@ def load_histogram(path: Path) -> snapshot.Histogram:
 
 
 class RealisationDistribution:
-    def __init__(self, path: Path) -> None:
-        assert path.is_file(), f"cannot find ecDNA distribution file {path}"
-        self.parameters = parameters_from_path(path)
-        self.distribution = load_histogram(path)
+    def __init__(self, distribution: snapshot.Histogram, params: Parameters) -> None:
+        self.distribution = distribution
+        self.parameters = params
+
+
+def realisation_distribution_from_path(path: Path) -> RealisationDistribution:
+    assert path.is_file(), f"cannot find ecDNA distribution file {path}"
+    return RealisationDistribution(load_histogram(path), parameters_from_path(path))
 
 
 def load_ecdnas_from_folder(
@@ -138,6 +142,6 @@ def load_ecdnas_from_folder(
         if max2load and i >= max2load:
             break
         for p in path.glob("*.json"):
-            realisations.append(RealisationDistribution(p))
+            realisations.append(realisation_distribution_from_path(p))
     print(f"loaded {len(realisations)} files from {path2dir}")
     return realisations
