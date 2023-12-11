@@ -7,7 +7,7 @@ import json
 import pandas as pd
 from pathlib import Path
 import sys
-from typing import Any, Dict, List, Set
+from typing import Any, Dict, List, Set, Union
 from futils import snapshot
 
 
@@ -132,7 +132,7 @@ def realisation_distribution_from_path(path: Path) -> RealisationDistribution:
 
 
 def load_ecdnas_from_folder(
-    path2dir: Path, max2load: int | None = None
+    path2dir: Path, max2load: Union[int, None] = None
 ) -> List[RealisationDistribution]:
     assert path2dir.is_dir()
     realisations = []
