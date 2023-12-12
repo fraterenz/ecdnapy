@@ -139,9 +139,9 @@ def load_ecdnas_from_folder(
 
     for path in path2dir.iterdir():
         i = 0
-        if max2load and i >= max2load:
-            break
         for p in path.glob("*.json"):
+            if max2load and i >= max2load:
+                break
             realisations.append(realisation_distribution_from_path(p))
     print(f"loaded {len(realisations)} files from {path2dir}")
     return realisations
