@@ -16,16 +16,15 @@ class Parameters:
         self,
         path: Path,
         sample: int,
-        population: int,
+        cells: int,
         b0: float,
         b1: float,
         d0: float,
         d1: float,
         idx: int,
     ):
-        self.sample = sample
         self.path = path
-        self.cells = population
+        self.cells = cells
         self.b0 = b0
         self.b1 = b1
         self.d0 = d0
@@ -62,18 +61,16 @@ class ParametersFile:
 
 def parameters_from_path(path: Path) -> Parameters:
     """Assume something like
-    100000samples100000population/ecdna/1dot1b0_1b1_0d0_0d1_0idx.json
+    100000cells/ecdna/1dot1b0_1b1_0d0_0d1_0idx.json
     """
     parts = path.parts
-    match_sample = re.compile(r"^(\d+)(samples)(\d+)(population)$", re.IGNORECASE)
+    match_sample = re.compile(r"^(\d+)(cells)$", re.IGNORECASE)
     sample, cells = 0, 0
     for part in parts:
         matched = match_sample.search(part)
         if matched:
-            sample = int(matched.group(1))
-            cells = int(matched.group(3))
+            cells = int(matched.group(1))
 
-    assert sample > 0, f"cannot find a value for samples from {path}"
     assert cells > 0, f"cannot find a value for cells from {path}"
 
     params_file = parse_filename_into_parameters(path)
