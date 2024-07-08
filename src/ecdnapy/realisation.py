@@ -1,17 +1,13 @@
 """Deal with data of the realisations of the birth-death process simulated in
 rust with binary `ecdna-evo`.
 """
-
 import re
 import json
 import pandas as pd
 from pathlib import Path
 import sys
 from typing import Any, Dict, List, Set, Union
-from futils import snapshot
-
-
-
+from futils import snapshot, parsing
 
 
 def load_histogram(path: Path) -> snapshot.Histogram:
@@ -24,14 +20,14 @@ def load_histogram(path: Path) -> snapshot.Histogram:
 
 
 class RealisationDistribution:
-    def __init__(self, distribution: snapshot.Histogram, params: Parameters) -> None:
+    def __init__(self, distribution: snapshot.Histogram, params: parsing.Parameters) -> None:
         self.distribution = distribution
         self.parameters = params
 
 
 def realisation_distribution_from_path(path: Path) -> RealisationDistribution:
     assert path.is_file(), f"cannot find ecDNA distribution file {path}"
-    return RealisationDistribution(load_histogram(path), parameters_from_path(path))
+    return RealisationDistribution(load_histogram(path), parsing.parameters_from_path(path))
 
 
 def load_ecdnas_from_folder(
