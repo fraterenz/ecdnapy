@@ -1,6 +1,6 @@
 from scipy import stats
 from futils import snapshot
-from typing import List
+from typing import Dict, List, Union
 from .realisation import RealisationDistribution
 
 
@@ -8,7 +8,7 @@ def summary_statistic_wasserstein(
     sims: List[RealisationDistribution],
     target: snapshot.Histogram,
     target_name: str,
-):
+    ) -> List[Dict[str, Union[str, float, int]]]:
     """
     Return a list of records (list of dict) with the summary statistics and
     other quantities such as the parameters used.
@@ -34,7 +34,7 @@ def summary_statistic_wasserstein(
             target_uniformised.values()
         )
 
-        params = my_ecdna.parameters.into_dict()
+        params = dict(**my_ecdna.parameters)
         # compute the summary statistic
         params["wasserstein"] = stats.wasserstein_distance(
             u_values, v_values, u_weights, v_weights

@@ -1,11 +1,13 @@
 """Deal with data of the realisations of the birth-death process simulated in
 rust with binary `ecdna-evo`.
 """
+import numpy as np
 import re
 import json
 import pandas as pd
 from pathlib import Path
 import sys
+from scipy import stats
 from typing import Any, Dict, List, Set, Union
 from futils import snapshot, parsing
 
@@ -23,6 +25,23 @@ class RealisationDistribution:
     def __init__(self, distribution: snapshot.Histogram, params: parsing.Parameters) -> None:
         self.distribution = distribution
         self.parameters = params
+        # cache
+        self.distribution_array: Union[np.ndarray, None] = None
+
+    def mean(self) -> float:
+        if self.distribution_array is None:
+            self.distribution_array = snapshot.array_from_hist(self.distribution)
+        return self.distribution_array.mean()
+
+    def var(self) -> float:
+        if self.distribution_array is None:
+            self.distribution_array = snapshot.array_from_hist(self.distribution)
+        return self.distribution_array.var()
+
+    def entropy(self) -> float:
+        if self.distribution_array is None:
+            self.distribution_array = snapshot.array_from_hist(self.distribution)
+        return float(stats.entropy(self.distribution_array))
 
 
 def realisation_distribution_from_path(path: Path) -> RealisationDistribution:
