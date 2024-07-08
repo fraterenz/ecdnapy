@@ -7,9 +7,16 @@ packages = ["src/ecdnapy"]
 
 [project]
 name = "ecdnapy"
-version = "0.0.1"
+version = "0.0.2"
 readme = "README.md"
 requires-python = ">=3.7"
+dependencies = [
+  "matplotlib",
+  "pandas",
+  "seaborn",
+  "scipy",
+  "futils @ git+https://github.com/fraterenz/futils@v0.0.3",
+]
 
 [project.urls]
 "Homepage" = "https://github.com/fraterenz/ecdnapy"
