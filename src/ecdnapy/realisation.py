@@ -32,7 +32,7 @@ class RealisationDistribution:
         return int(self.parameters["cells"]) - self.nminus()
 
     def nminus(self) -> int:
-        return int(self.distribution[0])
+        return int(self.distribution.get(0, 0))
 
     def mean(self) -> float:
         if self.distribution_array is None:
