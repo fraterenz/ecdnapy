@@ -10,7 +10,7 @@ allow-direct-references = true
 
 [project]
 name = "ecdnapy"
-version = "0.0.10"
+version = "0.0.11"
 readme = "README.md"
 requires-python = ">=3.7"
 dependencies = [
@@ -18,7 +18,7 @@ dependencies = [
   "pandas",
   "seaborn",
   "scipy",
-  "futils @ git+https://github.com/fraterenz/futils@v0.0.6",
+  "futils @ git+https://github.com/fraterenz/futils@v0.0.7",
 ]
 
 [project.urls]
