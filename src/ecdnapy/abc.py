@@ -2,12 +2,14 @@ from scipy import stats
 from futils import snapshot
 from typing import Dict, List, Union
 from .realisation import RealisationDistribution
+from futils import abc
 
 
-def summary_statistic_wasserstein(
+def summary_statistics(
     sims: List[RealisationDistribution],
     target: snapshot.Histogram,
     target_name: str,
+    stats: abc.Stats,
     ) -> List[Dict[str, Union[str, float, int]]]:
     """
     Return a list of records (list of dict) with the summary statistics and
@@ -16,30 +18,15 @@ def summary_statistic_wasserstein(
     that against the the distributions from the data.
 
     """
+    wasserstein = abc.Wasserstein()
     all_params = []
 
     for i, my_ecdna in enumerate(sims):
-        # uniformise such that they have the same support which is required by
-        # the wasserstein metric
-        target_uniformised, sim_uniformised = snapshot.Uniformise.uniformise_histograms(
-            [target, my_ecdna.distribution]
-        ).make_histograms()
-
-        assert len(target_uniformised) == len(sim_uniformised)
-
-        v_values, v_weights = list(sim_uniformised.keys()), list(
-            sim_uniformised.values()
-        )
-        u_values, u_weights = list(target_uniformised.keys()), list(
-            target_uniformised.values()
-        )
-
         params = dict(**my_ecdna.parameters)
-        # compute the summary statistic
-        params["wasserstein"] = stats.wasserstein_distance(
-            u_values, v_values, u_weights, v_weights
-        )
         params["patient"] = target_name
+        # compute the summary statistics
+        for s in stats:
+            params[s.__class__.__name__] = s.distance(target, my_ecdna.distribution)
         all_params.append(params)
 
     return all_params
