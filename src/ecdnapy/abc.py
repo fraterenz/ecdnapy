@@ -10,7 +10,7 @@ def summary_statistics(
     target: snapshot.Histogram,
     target_name: str,
     stats: abc.Stats,
-    ) -> List[Dict[str, Union[str, float, int]]]:
+) -> List[Dict[str, Union[str, float, int]]]:
     """
     Return a list of records (list of dict) with the summary statistics and
     other quantities such as the parameters used.
