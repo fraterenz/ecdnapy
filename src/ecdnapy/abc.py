@@ -1,8 +1,35 @@
+import pandas as pd
+from pathlib import Path
 from scipy import stats
 from futils import snapshot
 from typing import Dict, List, Union
 from .realisation import RealisationDistribution
 from futils import abc
+
+def load_nathanson(path2excell: Path)-> pd.DataFrame:
+	nathanson_raw = pd.read_excel(
+	    path2excell,
+	    sheet_name=None,
+	    header=0,
+	    usecols=[
+	        "Patient",
+	        "Pre/Post Treatment",
+	        "EGFR Counts ImageJ",
+	        "Pixel Counts ImageJ ",
+	    ],
+	)
+	data = pd.concat([ele for ele in nathanson_raw.values()])
+	data.reset_index(inplace=True, drop=True)
+	data.ffill(inplace=True)
+	data.Patient = data.Patient.astype("category")
+	data["Pixel Counts ImageJ "] /= data["Pixel Counts ImageJ "].max()
+	data.rename(
+	    {str(data.columns[-1]): "Norm. pixel counts", str(data.columns[-2]): "EGFR counts"},
+	    inplace=True,
+	    axis=1,
+	)
+	data["Pre/Post Treatment"] = data["Pre/Post Treatment"].astype("category")
+	return data
 
 
 def summary_statistics(

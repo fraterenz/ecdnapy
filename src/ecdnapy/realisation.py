@@ -30,6 +30,7 @@ class RealisationDistribution:
         self.parameters = params
         # cache
         self.distribution_array: Union[np.ndarray, None] = None
+        assert params["cells"] == sum(self.distribution.values())
 
     def nplus(self) -> int:
         return int(self.parameters["cells"]) - self.nminus()
