@@ -22,9 +22,8 @@ def load_nathanson(path2excell: Path)-> pd.DataFrame:
 	data.reset_index(inplace=True, drop=True)
 	data.ffill(inplace=True)
 	data.Patient = data.Patient.astype("category")
-	data["Pixel Counts ImageJ "] /= data["Pixel Counts ImageJ "].max()
 	data.rename(
-	    {str(data.columns[-1]): "Norm. pixel counts", str(data.columns[-2]): "EGFR counts"},
+	    {str(data.columns[-1]): "Pixel counts", str(data.columns[-2]): "EGFR counts"},
 	    inplace=True,
 	    axis=1,
 	)
