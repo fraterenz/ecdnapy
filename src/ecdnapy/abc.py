@@ -23,7 +23,7 @@ def load_nathanson(path2excell: Path)-> pd.DataFrame:
 	data.ffill(inplace=True)
 	data.Patient = data.Patient.astype("category")
 	data.rename(
-	    {str(data.columns[-1]): "Pixel counts", str(data.columns[-2]): "EGFR counts"},
+	    {str(data.columns[-1]): "Pixel counts", str(data.columns[-2]): "EGFR-vIII counts"},
 	    inplace=True,
 	    axis=1,
 	)

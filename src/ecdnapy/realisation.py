@@ -26,7 +26,7 @@ class RealisationDistribution:
     def __init__(
         self, distribution: snapshot.Histogram, params: parsing.Parameters
     ) -> None:
-        self.distribution = distribution
+        self.distribution = snapshot.Histogram(dict(sorted(distribution.items())))
         self.parameters = params
         # cache
         self.distribution_array: Union[np.ndarray, None] = None
